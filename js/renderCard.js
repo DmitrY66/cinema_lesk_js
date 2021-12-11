@@ -2,13 +2,15 @@ import { getVideo } from "./servis.js";
 
 const listCard = document.querySelector('.other-films__list');
 
-const renderCard = data => {
+const renderCard = (data, type) => {
 
   listCard.textContent = '';
 
   Promise.all(data.map(async (item) => {
 
-    const video = await getVideo(item.id, item.media_type);
+    const mediaType = item.media_type ?? type;
+
+    const video = await getVideo(item.id, mediaType);
     const key = video.results[0]?.key;
     // console.log('key: ', key);
 
@@ -34,9 +36,9 @@ const renderCard = data => {
     //   console.log(item);
     // };
 
-    img.src = item.poster_path ? 
-    `https://www.themoviedb.org/t/p/w600_and_h900_bestv2/${item.poster_path}` : 
-    `img/noposter.jpg`;
+    img.src = item.poster_path ?
+      `https://www.themoviedb.org/t/p/w600_and_h900_bestv2/${item.poster_path}` :
+      `img/noposter.jpg`;
 
     link.append(img);
     card.append(link);
